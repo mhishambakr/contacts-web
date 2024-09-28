@@ -2,6 +2,11 @@
   <div class="logo">
     <h1>Contacts</h1>
   </div>
+  <nav class="navbar">
+    <ul class="nav-menu">
+      <li class="nav-item"><button class="nav-button" [routerLink]="['/add-contact']">New Contact</button></li>
+    </ul>
+  </nav>
   <div class="user-profile">
     <button class="logout-button" (click)="logout()">Logout</button>
   </div>

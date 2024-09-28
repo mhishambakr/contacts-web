@@ -22,4 +22,11 @@ export class ContactService {
       }
     )
   }
+
+  addContact(contact: ContactItemDto) {
+    return this.http.post(
+      `http://localhost:3000/api/contact`,
+      contact
+    )
+  }
 }
