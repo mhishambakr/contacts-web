@@ -1,7 +1,7 @@
 <div class="contact-card">
   <div *ngIf="!editMode">
     <div class="contact-actions">
-      <button mat-icon-button (click)="editContact()">
+      <button mat-icon-button (click)="editContact()" [disabled]="isBeingEditedByAnotherUser">
         <mat-icon>edit</mat-icon>
       </button>
       <button mat-icon-button (click)="deleteContact()">

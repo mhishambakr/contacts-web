@@ -1,10 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { ContactFormComponent } from '../../contact-form/contact-form.component';
 import { ContactItemDto } from '../../../core/dtos/contact.dto';
 import { ContactService } from '../../../core/services/contact/contact.service';
+import { Subscription } from 'rxjs';
+import { WebSocketService } from '../../../core/services/websocket/websocket.service';
 
 @Component({
   selector: 'app-contact',
@@ -13,16 +15,37 @@ import { ContactService } from '../../../core/services/contact/contact.service';
   templateUrl: './contact.component.html',
   styleUrl: './contact.component.scss'
 })
-export class ContactComponent {
-  constructor(
-    private contactService: ContactService
-  ) { }
+export class ContactComponent implements OnInit, OnDestroy {
   @Input() contact!: ContactItemDto;
   @Output() delete = new EventEmitter<void>();
   editMode = false;
+  isBeingEditedByAnotherUser = false;
+  private editStatusSubscription!: Subscription;
+
+  constructor(
+    private contactService: ContactService,
+    private webSocketService: WebSocketService
+  ) { }
+
+  ngOnInit(): void {
+    this.editStatusSubscription = this.webSocketService.getEditStatusUpdates().subscribe(status => {
+      if (status.contactId === this.contact._id) {
+        this.isBeingEditedByAnotherUser = status.isEditing;
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.editStatusSubscription) {
+      this.editStatusSubscription.unsubscribe();
+    }
+  }
 
   editContact(): void {
-    this.editMode = true;
+    if (!this.isBeingEditedByAnotherUser) {
+      this.editMode = true;
+      this.webSocketService.sendEditStatus(this.contact._id, true);
+    }
   }
 
   deleteContact(): void {
@@ -33,12 +56,18 @@ export class ContactComponent {
     }
   }
 
-  onSubmitEditForm(contact:ContactItemDto): void {
-    this.contact = contact
+  onSubmitEditForm(contact: ContactItemDto): void {
+    this.contact = {
+      ...this.contact,
+      ...contact
+    };
     this.editMode = false;
+    console.log(contact)
+    this.webSocketService.sendEditStatus(this.contact._id, false);
   }
 
   onCancelEditForm(): void {
     this.editMode = false;
+    this.webSocketService.sendEditStatus(this.contact._id, false);
   }
 }
