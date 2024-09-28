@@ -30,6 +30,8 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       this.authService.login({ username, password }).subscribe(() => {
         this.router.navigate(['/contacts']);
+      },(err)=>{
+        alert(`Error: ${err.message}`);
       });
     }
   }

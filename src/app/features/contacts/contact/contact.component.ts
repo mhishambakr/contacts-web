@@ -52,6 +52,8 @@ export class ContactComponent implements OnInit, OnDestroy {
     if (confirm('Are you sure you want to delete this contact?')) {
       this.contactService.deleteContact(this.contact._id).subscribe(() => {
         this.delete.emit();
+      }, (error) => {
+        alert(`Error: ${error.error.message}`);
       });
     }
   }

@@ -24,14 +24,14 @@ export class ContactFormComponent implements OnInit {
   @Output() cancelEditForm = new EventEmitter<void>();
 
   ngOnInit(): void {
-    if(this.contact){
+    if (this.contact) {
       this.contactForm = this.formBuilder.group({
         name: [this.contact.name, Validators.required],
         phone: [this.contact.phone, Validators.required],
         address: [this.contact.address, Validators.required],
         notes: [this.contact.notes]
       });
-    }else{
+    } else {
       this.contactForm = this.formBuilder.group({
         name: ['', Validators.required],
         phone: ['', Validators.required],
@@ -47,7 +47,7 @@ export class ContactFormComponent implements OnInit {
 
   onSubmit(): void {
     if (this.contactForm.valid) {
-      if(this.editMode){
+      if (this.editMode) {
         this.contactService.updateContact(this.contactForm.value, this.contact._id)
           .subscribe(
             (response) => {
@@ -55,9 +55,10 @@ export class ContactFormComponent implements OnInit {
             },
             (error) => {
               console.error('Error updating contact', error);
+              alert(`Error: ${error.error.message}`);
             }
           );
-      }else{
+      } else {
         this.contactService.addContact(this.contactForm.value)
           .subscribe(
             (response) => {
@@ -65,6 +66,7 @@ export class ContactFormComponent implements OnInit {
             },
             (error) => {
               console.error('Error adding contact', error);
+              alert(`Error: ${error.error.message}`);
             }
           );
       }
