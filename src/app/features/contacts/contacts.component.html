@@ -1,6 +1,6 @@
 <app-header />
 <div class="contact-list">
-    <app-contact *ngFor="let contact of contacts" [contact]="contact"/>
+    <app-contact *ngFor="let contact of contacts" [contact]="contact" (delete)="onDelete()"/>
 </div>
 <app-paginator
   [totalPages]="totalPages"

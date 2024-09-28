@@ -39,4 +39,16 @@ export class ContactService {
       }
     )
   }
+
+  deleteContact(_id: string) {
+    return this.http.delete(
+      `http://localhost:3000/api/contact`,
+      {
+        params: {
+          _id
+        }
+      }
+    )
+  }
+  
 }

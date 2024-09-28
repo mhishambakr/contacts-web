@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { ContactFormComponent } from '../../contact-form/contact-form.component';
 import { ContactItemDto } from '../../../core/dtos/contact.dto';
+import { ContactService } from '../../../core/services/contact/contact.service';
 
 @Component({
   selector: 'app-contact',
@@ -13,8 +14,11 @@ import { ContactItemDto } from '../../../core/dtos/contact.dto';
   styleUrl: './contact.component.scss'
 })
 export class ContactComponent {
-  constructor() { }
+  constructor(
+    private contactService: ContactService
+  ) { }
   @Input() contact!: ContactItemDto;
+  @Output() delete = new EventEmitter<void>();
   editMode = false;
 
   editContact(): void {
@@ -22,7 +26,11 @@ export class ContactComponent {
   }
 
   deleteContact(): void {
-    console.log('Delete contact', this.contact);
+    if (confirm('Are you sure you want to delete this contact?')) {
+      this.contactService.deleteContact(this.contact._id).subscribe(() => {
+        this.delete.emit();
+      });
+    }
   }
 
   onSubmitEditForm(contact:ContactItemDto): void {

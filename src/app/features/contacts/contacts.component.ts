@@ -36,4 +36,8 @@ export class ContactsComponent implements OnInit {
     this.currentPage = page;
     this.getContacts();
   }
+
+  onDelete(): void {
+    this.getContacts();
+  }
 }
