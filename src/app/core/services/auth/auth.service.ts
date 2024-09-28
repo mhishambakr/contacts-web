@@ -35,8 +35,9 @@ export class AuthService {
     return this.isAuthenticated;
   }
 
-  logout(): void {
+  logout(): Observable<void> {
     localStorage.removeItem(this.authSecretKey);
     this.isAuthenticated = false;
+    return of(undefined);
   }
 }
