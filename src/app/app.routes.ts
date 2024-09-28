@@ -3,6 +3,7 @@ import { LoginComponent } from './features/login/login.component';
 import { ContactsComponent } from './features/contacts/contacts.component';
 import { AuthGuard } from './core/guards/auth.guard';
 import { ContactFormComponent } from './features/contact-form/contact-form.component';
+import { AddContactFormComponent } from './features/add-contact-form/add-contact-form.component';
 
 export const routes: Routes = [
     {
@@ -22,7 +23,7 @@ export const routes: Routes = [
     {
         path: 'add-contact',
         canActivate: [AuthGuard],
-        component: ContactFormComponent
+        component: AddContactFormComponent
     },
     {
         path: '**',

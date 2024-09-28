@@ -1,8 +1,22 @@
 <div class="contact-card">
-  <div class="contact-info">
-    <h2 class="contact-name">Name: {{ contact.name }}</h2>
-    <p class="contact-phone">Phone: {{ contact.phone }}</p>
-    <p class="contact-address">Address: {{ contact.address }}</p>
-    <p class="contact-notes">Notes: {{ contact.notes }}</p>
+  <div *ngIf="!editMode">
+    <div class="contact-actions">
+      <button mat-icon-button (click)="editContact()">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button (click)="deleteContact()">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+    <div class="contact-info">
+      <h2 class="contact-name">Name: {{ contact.name }}</h2>
+      <p class="contact-phone">Phone: {{ contact.phone }}</p>
+      <p class="contact-address">Address: {{ contact.address }}</p>
+      <p class="contact-notes">Notes: {{ contact.notes }}</p>
+    </div>
+  </div>
+  <div *ngIf="editMode">
+    <app-contact-form [editMode]="true" [contact]="contact" (submitEditForm)="onSubmitEditForm($event)" (cancelEditForm)="onCancelEditForm()">
+    ></app-contact-form>
   </div>
 </div>

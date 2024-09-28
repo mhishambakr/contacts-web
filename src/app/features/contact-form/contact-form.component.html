@@ -30,5 +30,6 @@
     </div>
 
     <button type="submit" [disabled]="contactForm.invalid">Submit</button>
+    <button type="submit" style="background-color: slategray;" *ngIf="editMode">Cancel</button>
   </form>
 </div>

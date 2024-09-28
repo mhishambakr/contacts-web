@@ -29,4 +29,14 @@ export class ContactService {
       contact
     )
   }
+
+  updateContact(contact: ContactItemDto, _id: string) {
+    return this.http.put(
+      `http://localhost:3000/api/contact`,
+      {
+        ...contact,
+        _id
+      }
+    )
+  }
 }
