@@ -2,3 +2,8 @@
 <div class="contact-list">
     <app-contact *ngFor="let contact of contacts" [contact]="contact"/>
 </div>
+<app-paginator
+  [totalPages]="totalPages"
+  [currentPage]="currentPage"
+  (pageChange)="onPageChange($event)">
+</app-paginator>

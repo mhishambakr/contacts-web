@@ -11,13 +11,13 @@ export class ContactService {
     private http: HttpClient
   ) { }
 
-  getContacts() {
+  getContacts({ page, limit }: { page: number, limit: number }) {
     return this.http.get<any>(
       `http://localhost:3000/api/contact`,
       {
-        params:{
-          page: '1',
-          limit: '5'
+        params: {
+          page,
+          limit
         }
       }
     )
