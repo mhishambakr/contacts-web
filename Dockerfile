@@ -8,19 +8,19 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install
+RUN yarn install
 
 # Copy the rest of the application code
 COPY . .
 
 # Build the Angular application
-RUN npm run build --prod
+RUN yarn build:prod
 
 # Stage 2: Serve the Angular application with Nginx
 FROM nginx:alpine
 
 # Copy the built Angular application from the previous stage
-COPY --from=build /app/dist/contacts-web /usr/share/nginx/html
+COPY --from=build /app/dist/contacts-web/browser /usr/share/nginx/html
 
 # Copy custom Nginx configuration
 COPY nginx.conf /etc/nginx/conf.d/default.conf
