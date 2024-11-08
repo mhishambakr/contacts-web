@@ -22,8 +22,11 @@ FROM nginx:alpine
 # Copy the built Angular application from the previous stage
 COPY --from=build /app/dist/contacts-web /usr/share/nginx/html
 
-# Expose port 80
-EXPOSE 80
+# Copy custom Nginx configuration
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Expose port 8080
+EXPOSE 8080
 
 # Start Nginx server
 CMD ["nginx", "-g", "daemon off;"]
