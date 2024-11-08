@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -8,9 +9,9 @@ import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 export class WebSocketService {
   private socket$: WebSocketSubject<any>;
   private editStatusSubject = new Subject<{ contactId: string, isEditing: boolean }>();
-
+  private wsUrl = environment.wsUrl;
   constructor() {
-    this.socket$ = webSocket('ws://localhost:8080');
+    this.socket$ = webSocket(this.wsUrl);
     this.socket$.subscribe(
       message => this.handleMessage(message),
       err => console.error(err),
